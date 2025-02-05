@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout::header(~{::title},_,_)}">
+    
+    
+    <title>Produits</title>
+    
+    
+</head>
+<body>
+    <nav th:replace="~{_layout::navbar}"></nav>
+
+    
+
+    <div class="container mt-5">
+        <h1> Nos fabuleux produits</h1>
+        <div th:if="${page.totalElements}==0">Aucun produit disponible</div>
+        <div th:if="${page.totalElements}>0">
+
+        
+        <div>
+            <form th:action="@{/produits}" method="get">
+                <input type="hidden" name="mc" th:value="${mc}">
+                <select name="s"  class="form-control" onchange="this.form.submit()">
+                    <option value="5" th:selected="${page.size==5}">5</option>
+                    <option value="10" th:selected="${page.size==10}">10</option>
+                    <option value="15" th:selected="${page.size==15}">15</option>
+                    
+                </select>
+
+            </form>
+
+            <form th:action="@{/produits}" method="get">
+                <input type="hidden" name="s" th:value="${page.size}">
+                <input type="text" name="mc" class="form-control" th:value="${mc}" placeholder=" délicieux mot clé...">
+
+            </form>
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Désignation</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Quantité</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr class="table-active" th:each="prod : ${listeProduits}">
+                
+                <td th:text="${prod.id}"></td>
+                <td th:text="${prod.designation}"></td>
+                <td th:text="${#numbers.formatDecimal(prod.prix, 2, 1,'COMMA')+' &euro;' }"></td>
+                <td th:text="${prod.quantite>0 ? prod.quantite : 'Ya plus'}"></td>
+                <td>
+                    <a href="#" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="#" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+
+                </td>
+                
+              </tr>
+            </tbody>
+          </table>
+
+          <div>
+            <ul class="pagination">
+              <li class="page-item" th:classappend="${page.first? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/produits(mc=${mc}, p=${page.number-1}, s=${page.size})}">&laquo;</a>
+              
+              <li class="page-item" th:each="i:${#numbers.sequence(0, page.totalPages-1)}">
+                <a class="page-link" th:classappend="${page.number==i? 'active':''}"
+                th:href="@{/produits(mc=${mc}, p=${i}, s=${page.size})}" th:text="${i}"></a>
+              </li>
+              
+              <li class="page-item" th:classappend="${page.last? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/produits(mc=${mc}, p=${page.number+1}, s=${page.size})}">&raquo;</a>
+              </li>
+            </ul>
+          </div>
+
+    </div>
+</div>
+</body>
+</html>
+
