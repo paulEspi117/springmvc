@@ -1,19 +1,46 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{_layout::header(~{::title},_,_)}">
+<head th:replace="~{_layout::header(~{::title},_,~{::script})}">
     
     
     <title>Produits</title>
     
-    
+    <script>
+      function confirmDelete(e) {
+        if (!confirm("Pitié :( ")) {
+          e.preventDefault();
+        }
+      }
+    </script>
 </head>
 <body>
+  
+
+
+
+
     <nav th:replace="~{_layout::navbar}"></nav>
 
     
 
     <div class="container mt-5">
         <h1> Nos fabuleux produits</h1>
+
+        <div th:if="${act=='del'}" class="alert alert-dismissible alert-danger">
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          <p>T'AS PAS HONTE ???</p>
+        </div>
+
+        <div th:if="${act=='mod'}" class="alert alert-dismissible alert-success">
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          <p>Le produit [[${produit.designation}]] a bien été modifié vous êtes très beau</p>
+        </div>
+
+        <div th:if="${act=='new'}" class="alert alert-dismissible alert-success">
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          <p>Le produit [[${produit.designation}]] a bien été créé vous êtes très beau</p>
+        </div>
+        
         <div th:if="${page.totalElements}==0">Aucun produit disponible</div>
         <div th:if="${page.totalElements}>0">
 
@@ -35,6 +62,7 @@
                 <input type="text" name="mc" class="form-control" th:value="${mc}" placeholder=" délicieux mot clé...">
 
             </form>
+            <a th:href="@{/produitEdit(mc=${mc}, p=${page.number}, s=${page.size})}" class="btn btn-primary">Nouveau produit</a>
         </div>
 
         <table class="table table-hover">
@@ -55,8 +83,9 @@
                 <td th:text="${#numbers.formatDecimal(prod.prix, 2, 1,'COMMA')+' &euro;' }"></td>
                 <td th:text="${prod.quantite>0 ? prod.quantite : 'Ya plus'}"></td>
                 <td>
-                    <a href="#" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a href="#" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                    <a th:href="@{/produitEdit(id=${prod.id} , mc=${mc}, p=${page.number}, s=${page.size})}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a onclick="confirmDelete(event)"
+                    th:href="@{/produitDelete(id=${prod.id}, mc=${mc}, p=${page.number}, s=${page.size} )}" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
 
                 </td>
                 
