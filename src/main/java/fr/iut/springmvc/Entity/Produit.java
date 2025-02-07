@@ -16,15 +16,15 @@ public class Produit {
     private Integer id;
 
     @NotNull
-    @Size(min = 3, max = 30)
+    @Size(min = 3, max = 30, message = "NOOON")
     private String designation;
 
     @NotNull
-    @DecimalMin("0.01")
+    @DecimalMin(value="0.01", message="T'es mauvais ")
     private double prix;
 
     @NotNull
-    @DecimalMin("0")
+    @DecimalMin(value="0", message = "La quantité ne peut pas être négative ")
     private int quantite;
 
     

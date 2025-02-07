@@ -108,6 +108,7 @@ public class ProduitController {
             model.addAttribute("mc", mc);
             model.addAttribute("p", p);
             model.addAttribute("s", s);
+            model.addAttribute("produit", produit);
             return "produitEdit";
         }
 

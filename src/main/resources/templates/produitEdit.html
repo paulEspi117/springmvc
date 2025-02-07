@@ -23,17 +23,27 @@
 
                 <div class="form-group">
                     <label for="designation">Designation</label>
-                    <input type="text" class="form-control" id="designation" th:field="*{designation}" required>
+                    <input type="text" 
+                           class="form-control" th:classappend="${#fields.hasErrors('designation')?'is-invalid' : ''}"
+                           id="designation" th:field="*{designation}" required>
+                    <div class="invalid-feedback" th:errors="*{designation}"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="prix">Prix</label>
-                    <input type="number" step="0.01" class="form-control" id="prix" th:field="*{prix}" required>
+                    <input type="number" step="0.01" 
+                           class="form-control"  th:classappend="${#fields.hasErrors('prix')?'is-invalid' : ''}"
+                           id="prix" th:field="*{prix}" required>                        
+                    <div class="invalid-feedback" th:errors="*{prix}"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="quantite">Quantité</label>
-                    <input type="number" step="1" class="form-control" id="quantite" th:field="*{quantite}" required>
+                    <input type="number" step="1" 
+                           class="form-control" th:classappend="${#fields.hasErrors('quantite')?'is-invalid' : ''}"
+                           id="quantite" th:field="*{quantite}" required>
+                    <div class="invalid-feedback" th:errors="*{quantite}"></div>
+
                 </div>
 
                 <div class="form-group">
